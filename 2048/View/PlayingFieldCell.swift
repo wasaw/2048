@@ -10,11 +10,25 @@ import UIKit
 class PlayingFieldCell: UICollectionViewCell {
     
 //    MARK: - Properties
+    let numberLaber: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.boldSystemFont(ofSize: 56)
+        label.textColor = UIColor.systemGray
+        label.textAlignment = .center
+        return label
+    }()
     
 //    MARK: - Lifecycle
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
+        addSubview(numberLaber)
+        numberLaber.translatesAutoresizingMaskIntoConstraints = false
+        numberLaber.leftAnchor.constraint(equalTo: leftAnchor, constant: 5).isActive = true
+        numberLaber.topAnchor.constraint(equalTo: topAnchor, constant: 5).isActive = true
+        numberLaber.rightAnchor.constraint(equalTo: rightAnchor, constant: -5).isActive = true
+        numberLaber.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -5).isActive = true
         
         backgroundColor = .collectionCellBackground
     }

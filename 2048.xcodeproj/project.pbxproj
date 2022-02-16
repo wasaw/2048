@@ -19,6 +19,7 @@
 		BBAE574E27B69D770071BF62 /* PlayingFieldController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBAE574D27B69D760071BF62 /* PlayingFieldController.swift */; };
 		BBAE575227BA7D470071BF62 /* PlayingFieldCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBAE575127BA7D470071BF62 /* PlayingFieldCell.swift */; };
 		BBAE575527BA882A0071BF62 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBAE575427BA882A0071BF62 /* Extensions.swift */; };
+		BBAE575927BBA0B40071BF62 /* Element.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBAE575827BBA0B40071BF62 /* Element.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,6 +56,7 @@
 		BBAE574D27B69D760071BF62 /* PlayingFieldController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayingFieldController.swift; sourceTree = "<group>"; };
 		BBAE575127BA7D470071BF62 /* PlayingFieldCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayingFieldCell.swift; sourceTree = "<group>"; };
 		BBAE575427BA882A0071BF62 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		BBAE575827BBA0B40071BF62 /* Element.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Element.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -164,6 +166,7 @@
 		BBAE574C27B69D0C0071BF62 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				BBAE575827BBA0B40071BF62 /* Element.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -308,6 +311,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BBAE572127B69CCF0071BF62 /* _048.xcdatamodeld in Sources */,
+				BBAE575927BBA0B40071BF62 /* Element.swift in Sources */,
 				BBAE571727B69CCF0071BF62 /* AppDelegate.swift in Sources */,
 				BBAE571927B69CCF0071BF62 /* SceneDelegate.swift in Sources */,
 				BBAE574E27B69D770071BF62 /* PlayingFieldController.swift in Sources */,
