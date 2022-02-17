@@ -138,14 +138,110 @@ class PlayingFieldController: UICollectionViewController {
     @objc func handleSwipeRight() {
         print("DEBUG: Swipe right")
         
+        var tempElements: [Element] = []
+        
+        for i in 0...3 {
+            var yElements: [Element] = []
+            for item in elements {
+                if item.y == i {
+                    yElements.append(item)
+                }
+            }
+            if yElements.isEmpty { continue }
+            if yElements.count == 1 {
+                yElements[0].x = 3
+                tempElements += yElements
+            } else {
+                yElements = yElements.sorted(by: { $0.x > $1.x })
+                for j in 1..<yElements.count {
+                    if yElements[j-1].number == yElements[j].number {
+                        yElements[j-1].toSwipe()
+                        yElements[j].number = 0
+                    }
+                }
+                yElements.removeAll {$0.number == 0}
+                var index = 3
+                for j in 0..<yElements.count {
+                    yElements[j].x = index
+                    index -= 1
+                }
+                yElements = yElements.sorted(by: { $0.x < $1.x} )
+                tempElements += yElements
+            }
+        }
+        elements = tempElements
+        addElement()
+        
     }
     
     @objc func handleSwipeUp() {
         print("DEBUG: Swipe up")
+        
+        var tempElements: [Element] = []
+        
+        for i in 0...3 {
+            var xElements: [Element] = []
+            for item in elements {
+                if item.x == i {
+                    xElements.append(item)
+                }
+            }
+            if xElements.isEmpty { continue }
+            if xElements.count == 1 {
+                xElements[0].y = 0
+                tempElements += xElements
+            } else {
+                for j in 1..<xElements.count {
+                    if xElements[j-1].number == xElements[j].number {
+                        xElements[j-1].toSwipe()
+                        xElements[j].number = 0
+                    }
+                }
+                xElements.removeAll {$0.number == 0}
+                for j in 0..<xElements.count {
+                    xElements[j].y = j
+                }
+                tempElements += xElements
+            }
+        }
+        elements = tempElements
+        addElement()
     }
     
     @objc func handleSwipeDown() {
         print("DEBUG: Swipe down")
+        
+        var tempElements: [Element] = []
+        
+        for i in 0...3 {
+            var xElements: [Element] = []
+            for item in elements {
+                if item.x == i {
+                    xElements.append(item)
+                }
+            }
+            if xElements.isEmpty { continue }
+            if xElements.count == 1 {
+                xElements[0].y = 3
+                tempElements += xElements
+            } else {
+                for j in 1..<xElements.count {
+                    if xElements[j-1].number == xElements[j].number {
+                        xElements[j-1].toSwipe()
+                        xElements[j].number = 0
+                    }
+                }
+                xElements.removeAll {$0.number == 0}
+                var index = 3
+                for j in 0..<xElements.count {
+                    xElements[j].y = index
+                    index -= 1
+                }
+                tempElements += xElements
+            }
+        }
+        elements = tempElements
+        addElement()
     }
 }
 
