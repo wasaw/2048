@@ -103,7 +103,6 @@ class PlayingFieldController: UICollectionViewController {
 //    MARK: - Selectors
     
     @objc func handleSwipeLeft() {
-        print("DEBUG: Swipe left")
         var tempElements: [Element] = []
         
         for i in 0...3 {
@@ -113,18 +112,23 @@ class PlayingFieldController: UICollectionViewController {
                     yElements.append(item)
                 }
             }
+            yElements = yElements.sorted(by: { $0.x < $1.x})
             if yElements.isEmpty { continue }
             if yElements.count == 1 {
                 yElements[0].x = 0
                 tempElements += yElements
             } else {
+//                yElements = yElements.sorted(by: { $0.x > $1.x })
+
                 for j in 1..<yElements.count {
                     if yElements[j-1].number == yElements[j].number {
                         yElements[j-1].toSwipe()
                         yElements[j].number = 0
+                        yElements[j-1].isTransform = true
                     }
                 }
                 yElements.removeAll {$0.number == 0}
+//                yElements = yElements.sorted(by: { $0.x < $1.x} )
                 for j in 0..<yElements.count {
                     yElements[j].x = j
                 }
@@ -136,8 +140,6 @@ class PlayingFieldController: UICollectionViewController {
     }
     
     @objc func handleSwipeRight() {
-        print("DEBUG: Swipe right")
-        
         var tempElements: [Element] = []
         
         for i in 0...3 {
@@ -157,6 +159,7 @@ class PlayingFieldController: UICollectionViewController {
                     if yElements[j-1].number == yElements[j].number {
                         yElements[j-1].toSwipe()
                         yElements[j].number = 0
+                        yElements[j-1].isTransform = true
                     }
                 }
                 yElements.removeAll {$0.number == 0}
@@ -175,9 +178,7 @@ class PlayingFieldController: UICollectionViewController {
     }
     
     @objc func handleSwipeUp() {
-        print("DEBUG: Swipe up")
-        
-        var tempElements: [Element] = []
+         var tempElements: [Element] = []
         
         for i in 0...3 {
             var xElements: [Element] = []
@@ -186,6 +187,7 @@ class PlayingFieldController: UICollectionViewController {
                     xElements.append(item)
                 }
             }
+            xElements = xElements.sorted(by: { $0.y < $1.y })
             if xElements.isEmpty { continue }
             if xElements.count == 1 {
                 xElements[0].y = 0
@@ -195,6 +197,7 @@ class PlayingFieldController: UICollectionViewController {
                     if xElements[j-1].number == xElements[j].number {
                         xElements[j-1].toSwipe()
                         xElements[j].number = 0
+                        xElements[j-1].isTransform = true
                     }
                 }
                 xElements.removeAll {$0.number == 0}
@@ -209,8 +212,6 @@ class PlayingFieldController: UICollectionViewController {
     }
     
     @objc func handleSwipeDown() {
-        print("DEBUG: Swipe down")
-        
         var tempElements: [Element] = []
         
         for i in 0...3 {
@@ -220,6 +221,7 @@ class PlayingFieldController: UICollectionViewController {
                     xElements.append(item)
                 }
             }
+            xElements = xElements.sorted(by: { $0.y > $1.y })
             if xElements.isEmpty { continue }
             if xElements.count == 1 {
                 xElements[0].y = 3
@@ -229,6 +231,7 @@ class PlayingFieldController: UICollectionViewController {
                     if xElements[j-1].number == xElements[j].number {
                         xElements[j-1].toSwipe()
                         xElements[j].number = 0
+                        xElements[j-1].isTransform = true
                     }
                 }
                 xElements.removeAll {$0.number == 0}
@@ -237,6 +240,7 @@ class PlayingFieldController: UICollectionViewController {
                     xElements[j].y = index
                     index -= 1
                 }
+                xElements = xElements.sorted(by: { $0.y < $1.y })
                 tempElements += xElements
             }
         }
@@ -250,8 +254,23 @@ extension PlayingFieldController {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifire, for: indexPath) as! PlayingFieldCell
         cell.numberLaber.text = ""
         cell.backgroundColor = .collectionCellBackground
-        for item in elements {
+        for (index, item) in elements.enumerated() {
             if item.x == indexPath.row && item.y == indexPath.section {
+                if item.isNew {
+                    cell.alpha = 0.1
+                    UIView.animate(withDuration: 1) {
+                        cell.alpha = 1
+//                        cell.transform = CGAffineTransform(scaleX: 2, y: 2)
+                        self.elements[index].isNew = false
+                    }
+                }
+                if item.isTransform {
+                    cell.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
+                    UIView.animate(withDuration: 0.6) {
+                        cell.transform = CGAffineTransform(scaleX: 1, y: 1)
+                        self.elements[index].isTransform = false
+                    }
+                }
                 cell.numberLaber.text = item.toString()
                 cell.backgroundColor = item.getBackgroundColor()
             }

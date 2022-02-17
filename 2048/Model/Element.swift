@@ -42,6 +42,8 @@ struct Element {
     var x, y: Int
     var number = 2
     var backgroundColor: BackgroundColor = .two
+    var isNew = true
+    var isTransform = false
     
     init(_ x: Int, _ y: Int) {
         self.x = x
