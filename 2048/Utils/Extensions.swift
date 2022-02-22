@@ -13,6 +13,8 @@ extension UIColor {
     static let playingBackground = UIColor(displayP3Red: 246/255, green: 255/255, blue: 248/255, alpha: 1)
     static let collectionBorderBackground = UIColor(displayP3Red: 106/255, green: 101/255, blue: 93/255, alpha: 1)
     static let collectionCellBackground = UIColor(displayP3Red: 222/255, green: 247/255, blue: 254/255, alpha: 1)
+    static let logoBackground = UIColor(displayP3Red: 245/255, green: 223/255, blue: 77/255, alpha: 1)
+    
     static let firstChangeColor = UIColor(displayP3Red: 255/255, green: 250/255, blue: 221/255, alpha: 1)
     static let secondChangeColor = UIColor(displayP3Red: 253/255, green: 238/255, blue: 217/255, alpha: 1)
     static let thirdChangeColor = UIColor(displayP3Red: 254/255, green: 214/266, blue: 188/255, alpha: 1)

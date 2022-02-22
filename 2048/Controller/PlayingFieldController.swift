@@ -15,6 +15,12 @@ class PlayingFieldController: UICollectionViewController {
     
     private let insets = UIEdgeInsets(top: 10, left: 10, bottom: 5, right: 10)
     private var elements: [Element] = []
+    private var score = 0
+    
+    private let scoreView = ScoreView()
+    private let scoreBestView = ScoreView()
+    private let databaseService = DatabaseService()
+    private let logoView = LogoView()
     
 //    MARK: - Lifecycle
     
@@ -26,13 +32,17 @@ class PlayingFieldController: UICollectionViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        start()
+        collectionView.reloadData()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         configureUI()
         configureSwipeGestureRecognizer()
-        
-        start()
         
         view.backgroundColor = .playingBackground
     }
@@ -41,6 +51,8 @@ class PlayingFieldController: UICollectionViewController {
     
     func configureUI() {
         configureCollectionView()
+        configureScoreView()
+        configureLogo()
     }
     
     func configureCollectionView() {
@@ -54,6 +66,30 @@ class PlayingFieldController: UICollectionViewController {
         collectionView.widthAnchor.constraint(equalToConstant: sideSquare).isActive = true
         collectionView.heightAnchor.constraint(equalToConstant: sideSquare + 15).isActive = true
         collectionView.backgroundColor = .collectionBorderBackground
+    }
+    
+    func configureScoreView() {
+        view.addSubview(scoreBestView)
+        scoreBestView.translatesAutoresizingMaskIntoConstraints = false
+        scoreBestView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 30).isActive = true
+        scoreBestView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -20).isActive = true
+        scoreBestView.nameLabel.text = "Лучший"
+        
+        view.addSubview(scoreView)
+        scoreView.translatesAutoresizingMaskIntoConstraints = false
+        scoreView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 30).isActive = true
+        scoreView.rightAnchor.constraint(equalTo: scoreBestView.leftAnchor, constant: -20).isActive = true
+        scoreView.nameLabel.text = "Счет"
+        scoreView.scoreLabel.text = "0"
+    }
+    
+    func configureLogo() {
+        view.addSubview(logoView)
+        logoView.translatesAutoresizingMaskIntoConstraints = false
+        logoView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20).isActive = true
+        logoView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 30).isActive = true
+        logoView.widthAnchor.constraint(equalToConstant: 120).isActive = true
+        logoView.heightAnchor.constraint(equalToConstant: 120).isActive = true
     }
     
     func configureSwipeGestureRecognizer() {
@@ -75,13 +111,23 @@ class PlayingFieldController: UICollectionViewController {
     }
     
     func start() {
+        elements = []
+        score = 0
+        scoreView.scoreLabel.text = "0"
         let element = Element(randome(), randome())
         elements.append(element)
+        
+        let bestScore = databaseService.getBestScore()
+        scoreBestView.scoreLabel.text = String(bestScore)
     }
     
     func addElement() {
         let isNotAdded = true
         var isNotMatch = true
+        if elements.count == 16 {
+            isNotMatch = false
+            endOfGame()
+        }
         var element = Element(0, 0)
         while isNotAdded == isNotMatch {
             element = Element(randome(), randome())
@@ -98,6 +144,15 @@ class PlayingFieldController: UICollectionViewController {
     
     func randome() -> Int {
         return Int.random(in: 0...3)
+    }
+    
+    func endOfGame() {
+        if score > databaseService.getBestScore() {
+            databaseService.saveBestScore(score: score)
+        }
+        let nav = UINavigationController(rootViewController: EndOfGameController(score: String(score)))
+        nav.modalPresentationStyle = .fullScreen
+        present(nav, animated: true, completion: nil)
     }
     
 //    MARK: - Selectors
@@ -118,17 +173,16 @@ class PlayingFieldController: UICollectionViewController {
                 yElements[0].x = 0
                 tempElements += yElements
             } else {
-//                yElements = yElements.sorted(by: { $0.x > $1.x })
-
                 for j in 1..<yElements.count {
                     if yElements[j-1].number == yElements[j].number {
                         yElements[j-1].toSwipe()
+                        score += yElements[j-1].number
+                        scoreView.scoreLabel.text = String(score)
                         yElements[j].number = 0
                         yElements[j-1].isTransform = true
                     }
                 }
                 yElements.removeAll {$0.number == 0}
-//                yElements = yElements.sorted(by: { $0.x < $1.x} )
                 for j in 0..<yElements.count {
                     yElements[j].x = j
                 }
@@ -158,6 +212,8 @@ class PlayingFieldController: UICollectionViewController {
                 for j in 1..<yElements.count {
                     if yElements[j-1].number == yElements[j].number {
                         yElements[j-1].toSwipe()
+                        score += yElements[j-1].number
+                        scoreView.scoreLabel.text = String(score)
                         yElements[j].number = 0
                         yElements[j-1].isTransform = true
                     }
@@ -196,6 +252,8 @@ class PlayingFieldController: UICollectionViewController {
                 for j in 1..<xElements.count {
                     if xElements[j-1].number == xElements[j].number {
                         xElements[j-1].toSwipe()
+                        score += xElements[j-1].number
+                        scoreView.scoreLabel.text = String(score)
                         xElements[j].number = 0
                         xElements[j-1].isTransform = true
                     }
@@ -230,6 +288,8 @@ class PlayingFieldController: UICollectionViewController {
                 for j in 1..<xElements.count {
                     if xElements[j-1].number == xElements[j].number {
                         xElements[j-1].toSwipe()
+                        score += xElements[j-1].number
+                        scoreView.scoreLabel.text = String(score)
                         xElements[j].number = 0
                         xElements[j-1].isTransform = true
                     }
@@ -249,6 +309,8 @@ class PlayingFieldController: UICollectionViewController {
     }
 }
 
+//  MARK: - Extensions
+
 extension PlayingFieldController {
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifire, for: indexPath) as! PlayingFieldCell
@@ -260,7 +322,6 @@ extension PlayingFieldController {
                     cell.alpha = 0.1
                     UIView.animate(withDuration: 1) {
                         cell.alpha = 1
-//                        cell.transform = CGAffineTransform(scaleX: 2, y: 2)
                         self.elements[index].isNew = false
                     }
                 }
