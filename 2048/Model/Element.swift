@@ -38,10 +38,17 @@ enum BackgroundColor: Int, CaseIterable {
     }
 }
 
+enum FontSize: CGFloat {
+    case one = 56
+    case two = 42
+    case three = 30
+}
+
 struct Element {
     var x, y: Int
     var number = 2
     var backgroundColor: BackgroundColor = .two
+    var fontSize: FontSize = .one
     var isNew = true
     var isTransform = false
     
@@ -62,5 +69,10 @@ struct Element {
         number += number
         let backgroundNumber = self.backgroundColor.rawValue + 1
         backgroundColor = BackgroundColor(rawValue: backgroundNumber) ?? .two
+        if number >= 1024 {
+            fontSize = .three
+        } else if number >= 128 {
+            fontSize = .two
+        }
     }
 }

@@ -12,12 +12,11 @@ class PlayingFieldCell: UICollectionViewCell {
 //    MARK: - Properties
     let numberLaber: UILabel = {
         let label = UILabel()
-        label.font = UIFont.boldSystemFont(ofSize: 56)
         label.textColor = UIColor.systemGray
         label.textAlignment = .center
         return label
     }()
-    
+        
 //    MARK: - Lifecycle
     
     override init(frame: CGRect) {

@@ -13,10 +13,10 @@
 		BB58718327BFD114007B57D9 /* EndOfGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB58718227BFD114007B57D9 /* EndOfGameView.swift */; };
 		BB58718527BFD158007B57D9 /* LogoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB58718427BFD158007B57D9 /* LogoView.swift */; };
 		BB58718727BFD18E007B57D9 /* EndOfGameController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB58718627BFD18E007B57D9 /* EndOfGameController.swift */; };
+		BB6A114E27CCD0DA006A7174 /* NewGameButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6A114D27CCD0DA006A7174 /* NewGameButton.swift */; };
 		BBAE571727B69CCF0071BF62 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBAE571627B69CCF0071BF62 /* AppDelegate.swift */; };
 		BBAE571927B69CCF0071BF62 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBAE571827B69CCF0071BF62 /* SceneDelegate.swift */; };
 		BBAE571E27B69CCF0071BF62 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BBAE571C27B69CCF0071BF62 /* Main.storyboard */; };
-		BBAE572127B69CCF0071BF62 /* _048.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = BBAE571F27B69CCF0071BF62 /* _048.xcdatamodeld */; };
 		BBAE572327B69CD40071BF62 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BBAE572227B69CD40071BF62 /* Assets.xcassets */; };
 		BBAE572627B69CD40071BF62 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BBAE572427B69CD40071BF62 /* LaunchScreen.storyboard */; };
 		BBAE573127B69CD40071BF62 /* _048Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBAE573027B69CD40071BF62 /* _048Tests.swift */; };
@@ -52,11 +52,11 @@
 		BB58718227BFD114007B57D9 /* EndOfGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndOfGameView.swift; sourceTree = "<group>"; };
 		BB58718427BFD158007B57D9 /* LogoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoView.swift; sourceTree = "<group>"; };
 		BB58718627BFD18E007B57D9 /* EndOfGameController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndOfGameController.swift; sourceTree = "<group>"; };
+		BB6A114D27CCD0DA006A7174 /* NewGameButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewGameButton.swift; sourceTree = "<group>"; };
 		BBAE571327B69CCF0071BF62 /* 2048.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = 2048.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BBAE571627B69CCF0071BF62 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BBAE571827B69CCF0071BF62 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		BBAE571D27B69CCF0071BF62 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		BBAE572027B69CCF0071BF62 /* _048.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = _048.xcdatamodel; sourceTree = "<group>"; };
 		BBAE572227B69CD40071BF62 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BBAE572527B69CD40071BF62 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		BBAE572727B69CD40071BF62 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -129,7 +129,6 @@
 				BBAE572227B69CD40071BF62 /* Assets.xcassets */,
 				BBAE572427B69CD40071BF62 /* LaunchScreen.storyboard */,
 				BBAE572727B69CD40071BF62 /* Info.plist */,
-				BBAE571F27B69CCF0071BF62 /* _048.xcdatamodeld */,
 				BB58717927BF9C97007B57D9 /* Model.xcdatamodeld */,
 			);
 			path = 2048;
@@ -168,6 +167,7 @@
 				BB58717727BE8F59007B57D9 /* ScoreView.swift */,
 				BB58718427BFD158007B57D9 /* LogoView.swift */,
 				BB58718227BFD114007B57D9 /* EndOfGameView.swift */,
+				BB6A114D27CCD0DA006A7174 /* NewGameButton.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -321,7 +321,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				BB58718727BFD18E007B57D9 /* EndOfGameController.swift in Sources */,
-				BBAE572127B69CCF0071BF62 /* _048.xcdatamodeld in Sources */,
 				BB58717827BE8F59007B57D9 /* ScoreView.swift in Sources */,
 				BBAE575927BBA0B40071BF62 /* Element.swift in Sources */,
 				BBAE571727B69CCF0071BF62 /* AppDelegate.swift in Sources */,
@@ -330,6 +329,7 @@
 				BB58717B27BF9C97007B57D9 /* Model.xcdatamodeld in Sources */,
 				BB58717D27BFA218007B57D9 /* DatabaseService.swift in Sources */,
 				BBAE574E27B69D770071BF62 /* PlayingFieldController.swift in Sources */,
+				BB6A114E27CCD0DA006A7174 /* NewGameButton.swift in Sources */,
 				BB58718527BFD158007B57D9 /* LogoView.swift in Sources */,
 				BBAE575227BA7D470071BF62 /* PlayingFieldCell.swift in Sources */,
 				BBAE575527BA882A0071BF62 /* Extensions.swift in Sources */,
@@ -687,16 +687,6 @@
 			);
 			currentVersion = BB58717A27BF9C97007B57D9 /* Model.xcdatamodel */;
 			path = Model.xcdatamodeld;
-			sourceTree = "<group>";
-			versionGroupType = wrapper.xcdatamodel;
-		};
-		BBAE571F27B69CCF0071BF62 /* _048.xcdatamodeld */ = {
-			isa = XCVersionGroup;
-			children = (
-				BBAE572027B69CCF0071BF62 /* _048.xcdatamodel */,
-			);
-			currentVersion = BBAE572027B69CCF0071BF62 /* _048.xcdatamodel */;
-			path = _048.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};

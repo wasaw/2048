@@ -21,6 +21,14 @@ class PlayingFieldController: UICollectionViewController {
     private let scoreBestView = ScoreView()
     private let databaseService = DatabaseService()
     private let logoView = LogoView()
+    private let newGameButton = NewGameButtom()
+    
+    enum Side {
+        case left
+        case right
+        case up
+        case down
+    }
     
 //    MARK: - Lifecycle
     
@@ -53,6 +61,7 @@ class PlayingFieldController: UICollectionViewController {
         configureCollectionView()
         configureScoreView()
         configureLogo()
+        configureNewGameButton()
     }
     
     func configureCollectionView() {
@@ -92,6 +101,17 @@ class PlayingFieldController: UICollectionViewController {
         logoView.heightAnchor.constraint(equalToConstant: 120).isActive = true
     }
     
+    func configureNewGameButton() {
+        view.addSubview(newGameButton)
+        newGameButton.translatesAutoresizingMaskIntoConstraints = false
+        newGameButton.leftAnchor.constraint(equalTo: scoreView.leftAnchor).isActive = true
+        newGameButton.topAnchor.constraint(equalTo: scoreView.bottomAnchor, constant: 15).isActive = true
+        newGameButton.rightAnchor.constraint(equalTo: scoreView.rightAnchor).isActive = true
+        newGameButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        
+        newGameButton.delegate = self
+    }
+    
     func configureSwipeGestureRecognizer() {
         let swipeLeft = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipeLeft))
         swipeLeft.direction = .left
@@ -117,8 +137,10 @@ class PlayingFieldController: UICollectionViewController {
         let element = Element(randome(), randome())
         elements.append(element)
         
-        let bestScore = databaseService.getBestScore()
-        scoreBestView.scoreLabel.text = String(bestScore)
+        DispatchQueue.main.async {
+            let bestScore = self.databaseService.getBestScore()
+            self.scoreBestView.scoreLabel.text = String(bestScore)
+        }
     }
     
     func addElement() {
@@ -148,164 +170,105 @@ class PlayingFieldController: UICollectionViewController {
     
     func endOfGame() {
         if score > databaseService.getBestScore() {
-            databaseService.saveBestScore(score: score)
+            DispatchQueue.main.async {
+                self.databaseService.saveBestScore(score: self.score)
+            }
         }
         let nav = UINavigationController(rootViewController: EndOfGameController(score: String(score)))
         nav.modalPresentationStyle = .fullScreen
         present(nav, animated: true, completion: nil)
     }
     
+    func handleSwipe(side : Side) {
+        var tempElements: [Element] = []
+
+        for i in 0...3 {
+            var axisElements: [Element] = []
+            for item in elements {
+                if item.y == i && (side == .left || side == .right) {
+                    axisElements.append(item)
+                } else if item.x == i && (side == .up || side == .down) {
+                    axisElements.append(item)
+                }
+            }
+            switch side {
+            case .left:
+                axisElements = axisElements.sorted(by: { $0.x < $1.x })
+            case .right:
+                axisElements = axisElements.sorted(by: { $0.x > $1.x })
+            case .up:
+                axisElements = axisElements.sorted(by: { $0.y < $1.y })
+            case .down:
+                axisElements = axisElements.sorted(by: { $0.y > $1.y })
+            }
+
+            if axisElements.isEmpty { continue }
+            if axisElements.count == 1 {
+                switch side {
+                case .left:
+                    axisElements[0].x = 0
+                case .right:
+                    axisElements[0].x = 3
+                case .up:
+                    axisElements[0].y = 0
+                case .down:
+                    axisElements[0].y = 3
+                }
+                tempElements += axisElements
+            } else {
+                for j in 1..<axisElements.count {
+                    if axisElements[j-1].number == axisElements[j].number {
+                        axisElements[j-1].toSwipe()
+                        score += axisElements[j-1].number
+                        scoreView.scoreLabel.text = String(score)
+                        axisElements[j].number = 0
+                        axisElements[j-1].isTransform = true
+                    }
+                }
+                axisElements.removeAll {$0.number == 0}
+                var index = 3
+                for j in 0..<axisElements.count {
+                    switch side {
+                    case .left:
+                        axisElements[j].x = j
+                    case .right:
+                        axisElements[j].x = index
+                        index -= 1
+                    case .up:
+                        axisElements[j].y = j
+                    case .down:
+                        axisElements[j].y = index
+                        index -= 1
+                    }
+                }
+                if side == .right {
+                    axisElements = axisElements.sorted(by: { $0.x < $1.x})
+                } else if side == .down {
+                    axisElements = axisElements.sorted(by: { $0.y < $1.y})
+                }
+                tempElements += axisElements
+            }
+        }
+        elements = tempElements
+        addElement()
+    }
+    
 //    MARK: - Selectors
     
     @objc func handleSwipeLeft() {
-        var tempElements: [Element] = []
-        
-        for i in 0...3 {
-            var yElements: [Element] = []
-            for item in elements {
-                if item.y == i {
-                    yElements.append(item)
-                }
-            }
-            yElements = yElements.sorted(by: { $0.x < $1.x})
-            if yElements.isEmpty { continue }
-            if yElements.count == 1 {
-                yElements[0].x = 0
-                tempElements += yElements
-            } else {
-                for j in 1..<yElements.count {
-                    if yElements[j-1].number == yElements[j].number {
-                        yElements[j-1].toSwipe()
-                        score += yElements[j-1].number
-                        scoreView.scoreLabel.text = String(score)
-                        yElements[j].number = 0
-                        yElements[j-1].isTransform = true
-                    }
-                }
-                yElements.removeAll {$0.number == 0}
-                for j in 0..<yElements.count {
-                    yElements[j].x = j
-                }
-                tempElements += yElements
-            }
-        }
-        elements = tempElements
-        addElement()
+        handleSwipe(side: .left)
     }
     
     @objc func handleSwipeRight() {
-        var tempElements: [Element] = []
-        
-        for i in 0...3 {
-            var yElements: [Element] = []
-            for item in elements {
-                if item.y == i {
-                    yElements.append(item)
-                }
-            }
-            if yElements.isEmpty { continue }
-            if yElements.count == 1 {
-                yElements[0].x = 3
-                tempElements += yElements
-            } else {
-                yElements = yElements.sorted(by: { $0.x > $1.x })
-                for j in 1..<yElements.count {
-                    if yElements[j-1].number == yElements[j].number {
-                        yElements[j-1].toSwipe()
-                        score += yElements[j-1].number
-                        scoreView.scoreLabel.text = String(score)
-                        yElements[j].number = 0
-                        yElements[j-1].isTransform = true
-                    }
-                }
-                yElements.removeAll {$0.number == 0}
-                var index = 3
-                for j in 0..<yElements.count {
-                    yElements[j].x = index
-                    index -= 1
-                }
-                yElements = yElements.sorted(by: { $0.x < $1.x} )
-                tempElements += yElements
-            }
-        }
-        elements = tempElements
-        addElement()
-        
+        handleSwipe(side: .right)
     }
     
     @objc func handleSwipeUp() {
-         var tempElements: [Element] = []
-        
-        for i in 0...3 {
-            var xElements: [Element] = []
-            for item in elements {
-                if item.x == i {
-                    xElements.append(item)
-                }
-            }
-            xElements = xElements.sorted(by: { $0.y < $1.y })
-            if xElements.isEmpty { continue }
-            if xElements.count == 1 {
-                xElements[0].y = 0
-                tempElements += xElements
-            } else {
-                for j in 1..<xElements.count {
-                    if xElements[j-1].number == xElements[j].number {
-                        xElements[j-1].toSwipe()
-                        score += xElements[j-1].number
-                        scoreView.scoreLabel.text = String(score)
-                        xElements[j].number = 0
-                        xElements[j-1].isTransform = true
-                    }
-                }
-                xElements.removeAll {$0.number == 0}
-                for j in 0..<xElements.count {
-                    xElements[j].y = j
-                }
-                tempElements += xElements
-            }
-        }
-        elements = tempElements
-        addElement()
+        handleSwipe(side: .up)
     }
     
     @objc func handleSwipeDown() {
-        var tempElements: [Element] = []
-        
-        for i in 0...3 {
-            var xElements: [Element] = []
-            for item in elements {
-                if item.x == i {
-                    xElements.append(item)
-                }
-            }
-            xElements = xElements.sorted(by: { $0.y > $1.y })
-            if xElements.isEmpty { continue }
-            if xElements.count == 1 {
-                xElements[0].y = 3
-                tempElements += xElements
-            } else {
-                for j in 1..<xElements.count {
-                    if xElements[j-1].number == xElements[j].number {
-                        xElements[j-1].toSwipe()
-                        score += xElements[j-1].number
-                        scoreView.scoreLabel.text = String(score)
-                        xElements[j].number = 0
-                        xElements[j-1].isTransform = true
-                    }
-                }
-                xElements.removeAll {$0.number == 0}
-                var index = 3
-                for j in 0..<xElements.count {
-                    xElements[j].y = index
-                    index -= 1
-                }
-                xElements = xElements.sorted(by: { $0.y < $1.y })
-                tempElements += xElements
-            }
-        }
-        elements = tempElements
-        addElement()
+        handleSwipe(side: .down)
     }
 }
 
@@ -333,6 +296,7 @@ extension PlayingFieldController {
                     }
                 }
                 cell.numberLaber.text = item.toString()
+                cell.numberLaber.font = UIFont.boldSystemFont(ofSize: item.fontSize.rawValue)
                 cell.backgroundColor = item.getBackgroundColor()
             }
         }
@@ -362,5 +326,12 @@ extension PlayingFieldController {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 0
+    }
+}
+
+extension PlayingFieldController: NewGameButtonDelegate {
+    func startNewGame() {
+        start()
+        collectionView.reloadData()
     }
 }
