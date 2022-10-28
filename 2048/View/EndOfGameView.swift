@@ -15,6 +15,8 @@ class EndOfGameView: UIView {
     
 //    MARK: - Properties
     
+    weak var delegate: EndOfGameDelegate?
+    
     private let gameOverLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 47)
@@ -23,15 +25,13 @@ class EndOfGameView: UIView {
         return label
     }()
     
-    let scoreLabel: UILabel = {
+    private let scoreLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 38)
         label.textColor = .brown
         return label
     }()
-    
-    weak var delegate: EndOfGameDelegate?
-    
+        
     private let backButton: UIButton = {
         let button = UIButton()
         button.setTitle("Попробовать снова", for: .normal)
@@ -39,9 +39,8 @@ class EndOfGameView: UIView {
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize:21)
         button.backgroundColor = .collectionBorderBackground
         button.layer.borderWidth = 1
-        button.widthAnchor.constraint(equalToConstant: 250).isActive = true
-        button.heightAnchor.constraint(equalToConstant: 60).isActive = true
-        button.layer.cornerRadius = 30
+        button.anchor(width: 250, height: 60)
+        button.layer.cornerRadius = 5
         button.addTarget(self, action: #selector(handleButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -58,20 +57,22 @@ class EndOfGameView: UIView {
         stack.alignment = .center
         
         addSubview(stack)
-        stack.translatesAutoresizingMaskIntoConstraints = false
-        stack.leftAnchor.constraint(equalTo: leftAnchor, constant: 10).isActive = true
-        stack.topAnchor.constraint(equalTo: topAnchor, constant: 10).isActive = true
-        stack.rightAnchor.constraint(equalTo: rightAnchor, constant: -10).isActive = true
-        stack.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -10).isActive = true
+        stack.anchor(left: leftAnchor, top: topAnchor, right: rightAnchor, bottom: bottomAnchor, paddingLeft: 10, paddingTop: 10, paddingRight: -10, paddingBottom: -10)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+//    MARK: - Helpers
+    
+    func setScore(_ score: Int) {
+        scoreLabel.text = "Ваш счет: " + String(score)
+    }
+    
 //    MARK: - Selectors
     
-    @objc func handleButtonTapped() {
+    @objc private func handleButtonTapped() {
         delegate?.startNewGame()
     }
 }

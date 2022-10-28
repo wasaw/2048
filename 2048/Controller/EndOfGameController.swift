@@ -11,11 +11,12 @@ class EndOfGameController: UIViewController {
     
 //    MARK: - Properties
     
-    private let score: String
-    
+    private let score: Int
     private let endView = EndOfGameView()
     
-    init(score: String) {
+//    MARK: - Lifecycle
+    
+    init(_ score: Int) {
         self.score = score
         super.init(nibName: nil, bundle: nil)
     }
@@ -26,19 +27,19 @@ class EndOfGameController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        endView.delegate = self
-        
-        view.addSubview(endView)
-        endView.translatesAutoresizingMaskIntoConstraints = false
-        endView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 15).isActive = true
-        endView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20).isActive = true
-        endView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -15).isActive = true
-        endView.heightAnchor.constraint(equalToConstant: 200).isActive = true
-        
-        endView.scoreLabel.text = "Ваш счет: " + score
+                
+        configureView()
         
         view.backgroundColor = .playingBackground
+    }
+    
+//    MARK: - Helpers
+    
+    private func configureView() {
+        view.addSubview(endView)
+        endView.delegate = self
+        endView.anchor(left: view.leftAnchor, top: view.safeAreaLayoutGuide.topAnchor, right: view.rightAnchor, paddingLeft: 15, paddingTop: 20, paddingRight: -15, height: 240)
+        endView.setScore(score)
     }
 }
 

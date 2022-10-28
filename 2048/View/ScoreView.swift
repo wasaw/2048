@@ -11,7 +11,7 @@ class ScoreView: UIView {
     
 //    MARK: - Properties
     
-    let nameLabel: UILabel = {
+    private let titleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 16)
         label.textColor = UIColor.lightGray
@@ -20,10 +20,11 @@ class ScoreView: UIView {
         return label
     }()
     
-    let scoreLabel: UILabel = {
+    private let scoreLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 27)
         label.textColor = UIColor.blue
+        label.text = "0"
         label.textAlignment = .center
         return label
     }()
@@ -33,11 +34,21 @@ class ScoreView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        translatesAutoresizingMaskIntoConstraints = false
-        widthAnchor.constraint(equalToConstant: 100).isActive = true
-        heightAnchor.constraint(equalToConstant: 100).isActive = true
+        anchor(width: 100, height: 100)
+        configureStack()
         
-        let stack = UIStackView(arrangedSubviews: [nameLabel, scoreLabel])
+        layer.cornerRadius = 5
+        backgroundColor = .collectionCellBackground
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+//    MARK: - Helpers
+    
+    private func configureStack() {
+        let stack = UIStackView(arrangedSubviews: [titleLabel, scoreLabel])
         stack.axis = .vertical
         stack.spacing = 4
         stack.distribution = .fillEqually
@@ -48,11 +59,13 @@ class ScoreView: UIView {
         stack.topAnchor.constraint(equalTo: topAnchor, constant: 10).isActive = true
         stack.rightAnchor.constraint(equalTo: rightAnchor, constant: -10).isActive = true
         stack.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -10).isActive = true
-        
-        backgroundColor = .collectionCellBackground
     }
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    func setTitle(_ title: String) {
+        titleLabel.text = title
+    }
+    
+    func updateScore(_ score: Int) {
+        scoreLabel.text = String(score)
     }
 }

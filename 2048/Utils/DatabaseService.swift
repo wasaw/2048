@@ -9,6 +9,11 @@ import CoreData
 import UIKit
 
 class DatabaseService {
+    
+//    MARK: - Properties
+    
+    static let shared = DatabaseService()
+    
     private let appDelegate = UIApplication.shared.delegate as! AppDelegate
     
     func saveBestScore(score: Int) {

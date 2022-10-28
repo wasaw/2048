@@ -24,6 +24,7 @@ class NewGameButtom: UIButton {
         titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
         titleLabel?.textColor = UIColor.white
         addTarget(self, action: #selector(handleTapped), for: .touchUpInside)
+        layer.cornerRadius = 5
         backgroundColor = .lightGray
     }
     
@@ -33,7 +34,7 @@ class NewGameButtom: UIButton {
     
 //    MARK: - Selectors
     
-    @objc func handleTapped() {
+    @objc private func handleTapped() {
         delegate?.startNewGame()
     }
 }

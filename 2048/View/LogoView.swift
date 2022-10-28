@@ -25,11 +25,10 @@ class LogoView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         addSubview(logoLabel)
-        logoLabel.translatesAutoresizingMaskIntoConstraints = false
         logoLabel.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
-        logoLabel.leftAnchor.constraint(equalTo: leftAnchor, constant: 10).isActive = true
-        logoLabel.rightAnchor.constraint(equalTo: rightAnchor, constant: -10).isActive = true
+        logoLabel.anchor(left: leftAnchor, right: rightAnchor, paddingLeft: 10, paddingRight: -10)
         
+        layer.cornerRadius = 5
         backgroundColor = UIColor.logoBackground
     }
     
