@@ -7,11 +7,15 @@
 
 import UIKit
 
-class ScoreView: UIView {
+private enum Constants {
+    static let stackDimensions: CGFloat = 10
+}
+
+final class ScoreView: UIView {
     
 //    MARK: - Properties
     
-    private let titleLabel: UILabel = {
+    private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 16)
         label.textColor = UIColor.lightGray
@@ -20,7 +24,7 @@ class ScoreView: UIView {
         return label
     }()
     
-    private let scoreLabel: UILabel = {
+    private lazy var scoreLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 27)
         label.textColor = UIColor.blue
@@ -34,7 +38,6 @@ class ScoreView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        anchor(width: 100, height: 100)
         configureStack()
         
         layer.cornerRadius = 5
@@ -54,11 +57,14 @@ class ScoreView: UIView {
         stack.distribution = .fillEqually
         
         addSubview(stack)
-        stack.translatesAutoresizingMaskIntoConstraints = false
-        stack.leftAnchor.constraint(equalTo: leftAnchor, constant: 10).isActive = true
-        stack.topAnchor.constraint(equalTo: topAnchor, constant: 10).isActive = true
-        stack.rightAnchor.constraint(equalTo: rightAnchor, constant: -10).isActive = true
-        stack.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -10).isActive = true
+        stack.anchor(leading: leadingAnchor,
+                     top: topAnchor,
+                     trailing: trailingAnchor,
+                     bottom: bottomAnchor,
+                     paddingLeading: Constants.stackDimensions,
+                     paddingTop: Constants.stackDimensions,
+                     paddingTrailing: -Constants.stackDimensions,
+                     paddingBottom: -Constants.stackDimensions)
     }
     
     func setTitle(_ title: String) {

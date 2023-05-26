@@ -7,7 +7,18 @@
 
 import UIKit
 
-class PlayingFieldController: UIViewController {
+private enum Constants {
+    static let logoPaddings: CGFloat = 20
+    static let logoDimensions: CGFloat = 120
+    static let scoreViewPaddings: CGFloat = 20
+    static let scoreViewHeight: CGFloat = 100
+    static let buttonPaddings: CGFloat = 15
+    static let buttonHeight: CGFloat = 40
+    static let collectionViewPaddingTop: CGFloat = 45
+    static let collectionViewDimensions: CGFloat = 20
+}
+
+final class PlayingFieldController: UIViewController {
     
 //    MARK: - Properties
     
@@ -52,7 +63,12 @@ class PlayingFieldController: UIViewController {
     
     private func configureLogo() {
         view.addSubview(logoView)
-        logoView.anchor(left: view.leftAnchor, top: view.safeAreaLayoutGuide.topAnchor, paddingLeft: 20, paddingTop: 20, width: 120, height: 120)
+        logoView.anchor(leading: view.leadingAnchor,
+                        top: view.safeAreaLayoutGuide.topAnchor,
+                        paddingLeading: Constants.logoPaddings,
+                        paddingTop: Constants.logoPaddings,
+                        width: Constants.logoDimensions,
+                        height: Constants.logoDimensions)
     }
     
     private func configureScoreView() {
@@ -61,12 +77,21 @@ class PlayingFieldController: UIViewController {
         stack.distribution = .fillEqually
         stack.spacing = 15
         view.addSubview(stack)
-        stack.anchor(left: logoView.rightAnchor, top: logoView.topAnchor, right: view.rightAnchor, paddingLeft: 10, paddingRight: -20, height: 100)
+        stack.anchor(leading: logoView.trailingAnchor,
+                     top: logoView.topAnchor,
+                     trailing: view.trailingAnchor,
+                     paddingLeading: Constants.scoreViewPaddings,
+                     paddingTrailing: -Constants.scoreViewPaddings,
+                     height: Constants.scoreViewHeight)
     }
     
     private func configureNewGameButton() {
         view.addSubview(newGameButton)
-        newGameButton.anchor(left: scoreView.leftAnchor, top: scoreView.bottomAnchor, right: scoreView.rightAnchor, paddingTop: 15, height: 40)
+        newGameButton.anchor(leading: scoreView.leadingAnchor,
+                             top: scoreView.bottomAnchor,
+                             trailing: scoreView.trailingAnchor,
+                             paddingTop: Constants.buttonPaddings,
+                             height: Constants.buttonHeight)
         
         newGameButton.delegate = self
     }
@@ -81,7 +106,14 @@ class PlayingFieldController: UIViewController {
         view.addSubview(collectionView)
         
         let side = view.frame.width - 40
-        collectionView.anchor(left: view.leftAnchor, top: newGameButton.bottomAnchor, right: view.rightAnchor, paddingLeft: 20, paddingTop: 45, paddingRight: -20, width: side, height: side + 15)
+        collectionView.anchor(leading: view.leadingAnchor,
+                              top: newGameButton.bottomAnchor,
+                              trailing: view.trailingAnchor,
+                              paddingLeading: Constants.collectionViewDimensions,
+                              paddingTop: Constants.collectionViewPaddingTop,
+                              paddingTrailing: -Constants.collectionViewDimensions,
+                              width: side,
+                              height: side + 15)
         collectionView.layer.cornerRadius = 5
         collectionView.backgroundColor = .collectionBorderBackground
     }

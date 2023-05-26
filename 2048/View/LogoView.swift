@@ -7,11 +7,16 @@
 
 import UIKit
 
-class LogoView: UIView {
+private enum Constants {
+    static let logoDimensions: CGFloat = 10
+    static let cornerRadius: CGFloat = 5
+}
+
+final class LogoView: UIView {
     
 //    MARK: - Properties
     
-    private let logoLabel: UILabel = {
+    private lazy var logoLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 38)
         label.textColor = .white
@@ -26,9 +31,12 @@ class LogoView: UIView {
         super.init(frame: frame)
         addSubview(logoLabel)
         logoLabel.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
-        logoLabel.anchor(left: leftAnchor, right: rightAnchor, paddingLeft: 10, paddingRight: -10)
+        logoLabel.anchor(leading: leadingAnchor,
+                         trailing: trailingAnchor,
+                         paddingLeading: Constants.logoDimensions,
+                         paddingTrailing: -Constants.logoDimensions)
         
-        layer.cornerRadius = 5
+        layer.cornerRadius = Constants.cornerRadius
         backgroundColor = UIColor.logoBackground
     }
     

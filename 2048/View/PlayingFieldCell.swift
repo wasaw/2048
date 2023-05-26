@@ -7,13 +7,17 @@
 
 import UIKit
 
-class PlayingFieldCell: UICollectionViewCell {
+private enum Constants {
+    static let numberLabelDimensions: CGFloat = 5
+}
+
+final class PlayingFieldCell: UICollectionViewCell {
     
 //    MARK: - Properties
     
     static let reuseIdentifire = "PlayingFieldCell"
 
-    private let numberLabel: UILabel = {
+    private lazy var numberLabel: UILabel = {
         let label = UILabel()
         label.textColor = UIColor.systemGray
         label.textAlignment = .center
@@ -26,7 +30,14 @@ class PlayingFieldCell: UICollectionViewCell {
         super.init(frame: frame)
         
         addSubview(numberLabel)
-        numberLabel.anchor(left: leftAnchor, top: topAnchor, right: rightAnchor, bottom: bottomAnchor, paddingLeft: 5, paddingTop: 5, paddingRight: -5, paddingBottom: -5)
+        numberLabel.anchor(leading: leadingAnchor,
+                           top: topAnchor,
+                           trailing: trailingAnchor,
+                           bottom: bottomAnchor,
+                           paddingLeading: Constants.numberLabelDimensions,
+                           paddingTop: Constants.numberLabelDimensions,
+                           paddingTrailing: -Constants.numberLabelDimensions,
+                           paddingBottom: -Constants.numberLabelDimensions)
         
         layer.cornerRadius = 5
         backgroundColor = .collectionCellBackground

@@ -7,7 +7,13 @@
 
 import UIKit
 
-class EndOfGameController: UIViewController {
+private enum Constants {
+    static let endViewPaddingTop: CGFloat = 20
+    static let endViewDimensions: CGFloat = 15
+    static let endViewHeight: CGFloat = 240
+}
+
+final class EndOfGameController: UIViewController {
     
 //    MARK: - Properties
     
@@ -38,7 +44,13 @@ class EndOfGameController: UIViewController {
     private func configureView() {
         view.addSubview(endView)
         endView.delegate = self
-        endView.anchor(left: view.leftAnchor, top: view.safeAreaLayoutGuide.topAnchor, right: view.rightAnchor, paddingLeft: 15, paddingTop: 20, paddingRight: -15, height: 240)
+        endView.anchor(leading: view.leadingAnchor,
+                       top: view.safeAreaLayoutGuide.topAnchor,
+                       trailing: view.trailingAnchor,
+                       paddingLeading: Constants.endViewDimensions,
+                       paddingTop: Constants.endViewPaddingTop,
+                       paddingTrailing: -Constants.endViewDimensions,
+                       height: Constants.endViewHeight)
         endView.setScore(score)
     }
 }

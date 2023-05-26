@@ -11,13 +11,17 @@ protocol EndOfGameDelegate: AnyObject {
     func startNewGame()
 }
 
-class EndOfGameView: UIView {
+private enum Constants {
+    static let stackDimensions: CGFloat = 10
+}
+
+final class EndOfGameView: UIView {
     
 //    MARK: - Properties
     
     weak var delegate: EndOfGameDelegate?
     
-    private let gameOverLabel: UILabel = {
+    private lazy var gameOverLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 47)
         label.textColor = .collectionBorderBackground
@@ -25,14 +29,14 @@ class EndOfGameView: UIView {
         return label
     }()
     
-    private let scoreLabel: UILabel = {
+    private lazy var scoreLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 38)
         label.textColor = .brown
         return label
     }()
         
-    private let backButton: UIButton = {
+    private lazy var backButton: UIButton = {
         let button = UIButton()
         button.setTitle("Попробовать снова", for: .normal)
         button.setTitleColor(.white, for: .normal)
@@ -57,7 +61,14 @@ class EndOfGameView: UIView {
         stack.alignment = .center
         
         addSubview(stack)
-        stack.anchor(left: leftAnchor, top: topAnchor, right: rightAnchor, bottom: bottomAnchor, paddingLeft: 10, paddingTop: 10, paddingRight: -10, paddingBottom: -10)
+        stack.anchor(leading: leadingAnchor,
+                     top: topAnchor,
+                     trailing: trailingAnchor,
+                     bottom: bottomAnchor,
+                     paddingLeading: Constants.stackDimensions,
+                     paddingTop: Constants.stackDimensions,
+                     paddingTrailing: -Constants.stackDimensions,
+                     paddingBottom: -Constants.stackDimensions)
     }
     
     required init?(coder: NSCoder) {

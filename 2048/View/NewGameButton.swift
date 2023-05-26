@@ -7,11 +7,11 @@
 
 import UIKit
 
-protocol NewGameButtonDelegate: class {
+protocol NewGameButtonDelegate: AnyObject {
     func startNewGame()
 }
 
-class NewGameButtom: UIButton {
+final class NewGameButtom: UIButton {
     
 //    MARK: - Properties
     weak var delegate: NewGameButtonDelegate?
