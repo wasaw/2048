@@ -2,7 +2,7 @@
 Копия популярной игры 2048.
 
 ## Внешний вид приложения
-![app view](https://user-images.githubusercontent.com/46762248/198827451-7faf0310-0171-4d93-a4cd-f567b77b0ed8.png)
+<img src="https://user-images.githubusercontent.com/46762248/198827451-7faf0310-0171-4d93-a4cd-f567b77b0ed8.png" width=30% height=30% />
 
 ## Установка
 Для запуска приложения достаточно клонировать проект.
