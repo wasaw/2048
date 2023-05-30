@@ -12,10 +12,9 @@ private enum Constants {
 }
 
 final class PlayingFieldCell: UICollectionViewCell {
-    
-//    MARK: - Properties
-    
     static let reuseIdentifire = "PlayingFieldCell"
+
+//    MARK: - Properties
 
     private lazy var numberLabel: UILabel = {
         let label = UILabel()

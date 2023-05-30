@@ -16,6 +16,8 @@ private enum Constants {
     static let buttonHeight: CGFloat = 40
     static let collectionViewPaddingTop: CGFloat = 45
     static let collectionViewDimensions: CGFloat = 20
+    static let minimumSectionSpacing: CGFloat = 0
+    static let fieldSize = 4
 }
 
 final class PlayingFieldController: UIViewController {
@@ -142,9 +144,17 @@ final class PlayingFieldController: UIViewController {
         scoreView.setTitle("Счет")
         scoreBestView.setTitle("Лучший")
         addElement()
+        scoreView.updateScore(score)
         
         DispatchQueue.main.async {
-            self.bestScore = self.databaseService.getBestScore()
+            self.databaseService.getBestScore { result in
+                switch result {
+                case .success(let score):
+                    self.bestScore = score
+                case .failure(_):
+                    self.bestScore = 0
+                }
+            }
             self.scoreBestView.updateScore(self.bestScore)
         }
     }
@@ -184,12 +194,20 @@ final class PlayingFieldController: UIViewController {
     private func endOfGame() {
         if score > bestScore {
             DispatchQueue.main.async {
-                self.databaseService.saveBestScore(score: self.score)
+                self.databaseService.saveBestScore(score: self.score) { result in
+                    switch result {
+                    case .success(_):
+                        break
+                    case .failure(_):
+                        break
+                    }
+                }
             }
         }
         let vc = EndOfGameController(score)
         vc.modalPresentationStyle = .fullScreen
         present(vc, animated: true)
+        start()
     }
     
     private func handleSwipe(side : Direction) {
@@ -300,7 +318,7 @@ final class PlayingFieldController: UIViewController {
 
 extension PlayingFieldController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 4
+        return Constants.fieldSize
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -329,11 +347,11 @@ extension PlayingFieldController: UICollectionViewDataSource {
     }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 4
+        return Constants.fieldSize
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return 0
+        return Constants.minimumSectionSpacing
     }
 }
 

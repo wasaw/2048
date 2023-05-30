@@ -50,3 +50,13 @@ enum FontSize: CGFloat {
     case three = 30
     case four = 26
 }
+
+enum ResultStatus<T> {
+    case success(T)
+    case failure(Error)
+}
+
+enum CoreDataError: Error {
+    case notSave
+    case notRead
+}

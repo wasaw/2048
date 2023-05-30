@@ -8,15 +8,14 @@
 import CoreData
 import UIKit
 
-class DatabaseService {
-    
-//    MARK: - Properties
-    
+final class DatabaseService {
     static let shared = DatabaseService()
     
+//    MARK: - Properties
+        
     private let appDelegate = UIApplication.shared.delegate as! AppDelegate
     
-    func saveBestScore(score: Int) {
+    func saveBestScore(score: Int, completion: @escaping(ResultStatus<Bool>) -> Void) {
         let context = appDelegate.persistentContainer.viewContext
         
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Score")
@@ -32,15 +31,16 @@ class DatabaseService {
             newScore.setValue(score, forKey: "best")
             do {
                 try context.save()
-            } catch let error as NSError {
-                print(error)
+                completion(.success(true))
+            } catch {
+                completion(.failure(CoreDataError.notSave))
             }
-        } catch let error as NSError {
-            print(error)
+        } catch {
+            completion(.failure(CoreDataError.notSave))
         }
     }
     
-    func getBestScore() -> Int {
+    func getBestScore(completion: @escaping(ResultStatus<Int>) -> Void) {
         let context = appDelegate.persistentContainer.viewContext
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Score")
         
@@ -49,13 +49,11 @@ class DatabaseService {
             for data in result {
                 if let data = data as? NSManagedObject {
                     let score = data.value(forKey: "best") as? Int ?? 0
-                    return score
+                    completion(.success(score))
                 }
             }
-        } catch let error as NSError {
-            print(error)
+        } catch {
+            completion(.failure(CoreDataError.notRead))
         }
-        
-        return 0
     }
 }
